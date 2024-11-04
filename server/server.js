@@ -5,10 +5,15 @@ const mysql = require('mysql2');
 const authRoutes = require('./routes/auth');
 const authenticateToken = require('./middlewares/authMiddleware');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
+// Load environment variables from .env file
 dotenv.config();
 
-const app = express();
+const app = express(); // Initialize Express app
+
+// Enable CORS for all routes
+app.use(cors());
 app.use(bodyParser.json());
 
 // Database connection
@@ -46,5 +51,8 @@ app.get('/protected', authenticateToken, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
 
+// Start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
