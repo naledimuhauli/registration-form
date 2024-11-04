@@ -1,6 +1,7 @@
 import './App.css';
 import Registration from './registration';
-import LandingPage from './landingPage'; // Corrected import name
+import LandingPage from './landingPage';
+import Login from './login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -8,8 +9,9 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Registration />} /> {/* Updated to LandingPage */}
-          <Route path="/dashboard" element={< LandingPage />} /> {/* Added route for Registration */}
+          <Route path="/" element={<Registration />} />
+          <Route path="/dashboard" element={< LandingPage />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </Router>
     </div>
