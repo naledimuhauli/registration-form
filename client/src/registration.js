@@ -1,6 +1,6 @@
-// Registration.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import coverPhoto from './images/Image.png';
@@ -10,6 +10,7 @@ import separator from './images/Seperater.png';
 import { Link } from 'react-router-dom';
 
 function Registration() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,18 +32,31 @@ function Registration() {
     setError('');
     setSuccess('');
 
+    // Input validation
+    if (!formData.name || !formData.email || !formData.password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     try {
       // Send POST request to backend
       const response = await axios.post('http://localhost:5000/auth/register', formData);
       setSuccess(response.data.message); // Display success message
-      setFormData({ name: '', email: '', password: '' }); // Reset form
+
+      // Clear the form
+      setFormData({ name: '', email: '', password: '' });
+
+      // Redirect after 2 seconds to the registration page
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed'); // Display error message
+      setError(err.response?.data?.message || 'Registration failed');
     }
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google'; // Adjust URL if deployed
+    window.location.href = 'http://localhost:5000/auth/google';
   };
 
   return (
@@ -98,13 +112,15 @@ function Registration() {
                   <input type="checkbox" className="form-check-input" id="rememberMe" />
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
-                <Link to={'/dashboard'}>
-                  <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
-                </Link>
+                <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
                 {error && <p className="text-danger mt-2">{error}</p>}
                 {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
-                  Already have an account? <span className="login">Log in</span>
+                  Already have an account? <span className="login">
+                    <Link to={'/login'}>
+                      Log in
+                    </Link>
+                  </span>
                 </p>
               </form>
             </div>
