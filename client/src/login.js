@@ -80,7 +80,7 @@ function Login() {
                                 <p className="account mt-3">
                                     Don’t have an account?{' '}
                                     <span className="login">
-                                        <Link to={'/'}>Sign up</Link>
+                                        <Link to={'/'} className='login'>Sign up</Link>
                                     </span>
                                 </p>
                             </form>

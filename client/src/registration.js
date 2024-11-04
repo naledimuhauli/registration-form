@@ -66,7 +66,7 @@ function Registration() {
   return (
     <div className="regi">
       <div className='form'>
-        <div className='logo'>
+        <div className='logo mb-5'>
           <img src={logo} alt='logo' />
         </div>
         <div className='container-fluid'>
@@ -74,7 +74,7 @@ function Registration() {
             <div className='col-md-6 d-flex flex-column align-items-center justify-content-center'>
               <h1 className="sign-up mt-5">SIGN UP</h1>
               <p className="create">Create an account to get started</p>
-              <button className="continue mb-3 mt-5" onClick={handleGoogleLogin}>
+              <button className="continue mb-3 mt-3" onClick={handleGoogleLogin}>
                 <img src={glogin} alt="google login" />
               </button>
               <img src={separator} alt="separator" className="mb-3 mt-3" />
@@ -116,13 +116,13 @@ function Registration() {
                   <input type="checkbox" className="form-check-input" id="rememberMe" />
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
-                <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
+                <button type="submit" className=" registerBtn">Register</button>
                 {error && <p className="text-danger mt-2">{error}</p>}
                 {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
                   Already have an account?{' '}
                   <span className="login">
-                    <Link to={'/login'}>Log in</Link>
+                    <Link to={'/login'} className='login'>Log in</Link>
                   </span>
                 </p>
               </form>
