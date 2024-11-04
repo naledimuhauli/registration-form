@@ -7,6 +7,7 @@ import coverPhoto from './images/Image.png';
 import logo from './images/Logo.png';
 import glogin from './images/Glogin.png';
 import separator from './images/Seperater.png';
+import { Link } from 'react-router-dom';
 
 function Registration() {
   const [formData, setFormData] = useState({
@@ -93,7 +94,9 @@ function Registration() {
                   <input type="checkbox" className="form-check-input" id="rememberMe" />
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
-                <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
+                <Link to={'/register'}>
+                  <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
+                </Link>
                 {error && <p className="text-danger mt-2">{error}</p>}
                 {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
