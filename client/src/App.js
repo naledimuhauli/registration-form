@@ -9,7 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Registration />} /> {/* Updated to LandingPage */}
-          <Route path="/register" element={< LandingPage />} /> {/* Added route for Registration */}
+          <Route path="/dashboard" element={< LandingPage />} /> {/* Added route for Registration */}
         </Routes>
       </Router>
     </div>

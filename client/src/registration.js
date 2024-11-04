@@ -41,6 +41,10 @@ function Registration() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:5000/auth/google'; // Adjust URL if deployed
+  };
+
   return (
     <div className="regi">
       <div className='form'>
@@ -52,7 +56,7 @@ function Registration() {
             <div className='col-md-6 d-flex flex-column align-items-center justify-content-center'>
               <h1 className="sign-up mt-5">SIGN UP</h1>
               <p className="create">Create an account to get started</p>
-              <button className="continue mb-3 mt-5">
+              <button className="continue mb-3 mt-5" onClick={handleGoogleLogin} >
                 <img src={glogin} alt="google" />
               </button>
               <img src={separator} alt="separator" className="mb-3 mt-3" />
@@ -94,7 +98,7 @@ function Registration() {
                   <input type="checkbox" className="form-check-input" id="rememberMe" />
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
-                <Link to={'/register'}>
+                <Link to={'/dashboard'}>
                   <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
                 </Link>
                 {error && <p className="text-danger mt-2">{error}</p>}
