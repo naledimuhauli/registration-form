@@ -1,0 +1,72 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.form {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin-top: 10px;
+    width: 166px;
+    height: 51px;
+}
+
+.logo img {
+    max-width: 150px;
+}
+
+.cover-photo {
+    width: 620px;
+    height: 700px;
+
+}
+
+.sign-up,
+.create {
+    text-align: center;
+}
+
+.sign-up {
+    margin-top: 5px;
+    font-size: 50px;
+    font-weight: 600;
+    font-family: arial;
+}
+
+.create {
+    font-size: 20px;
+}
+
+.continue {
+    border: white;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
+
+.inputForm {
+    width: 450px;
+    margin-bottom: 5px;
+}
+
+.registerBtn {
+    color: black;
+    border-radius: 50px;
+}
+
+.account {
+    text-align: center;
+}
+
+.login {
+    color: #FEC00F;
+}
