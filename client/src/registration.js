@@ -1,4 +1,6 @@
-import React from 'react';
+// Registration.js
+import React, { useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import coverPhoto from './images/Image.png';
@@ -7,6 +9,37 @@ import glogin from './images/Glogin.png';
 import separator from './images/Seperater.png';
 
 function Registration() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      // Send POST request to backend
+      const response = await axios.post('http://localhost:5000/auth/register', formData);
+      setSuccess(response.data.message); // Display success message
+      setFormData({ name: '', email: '', password: '' }); // Reset form
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed'); // Display error message
+    }
+  };
+
   return (
     <div className="regi">
       <div className='form'>
@@ -22,26 +55,38 @@ function Registration() {
                 <img src={glogin} alt="google" />
               </button>
               <img src={separator} alt="separator" className="mb-3 mt-3" />
-              <form className="w-75 mt-3">
+              <form className="w-75 mt-3" onSubmit={handleSubmit}>
                 <div className="mb-3 inputForm">
                   <input
                     type="text"
+                    name="name"
                     className="form-control"
                     placeholder='Name'
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="mb-3 inputForm">
                   <input
                     type="email"
+                    name="email"
                     className="form-control"
                     placeholder='Email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="mb-3 inputForm">
                   <input
                     type="password"
+                    name="password"
                     className="form-control"
                     placeholder='Password'
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="mb-3 form-check">
@@ -49,6 +94,8 @@ function Registration() {
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
                 <button type="submit" className="btn btn-dark w-100 registerBtn">Register</button>
+                {error && <p className="text-danger mt-2">{error}</p>}
+                {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
                   Already have an account? <span className="login">Log in</span>
                 </p>

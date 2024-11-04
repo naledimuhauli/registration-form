@@ -4,24 +4,38 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const authRoutes = require('./routes/auth');
 const authenticateToken = require('./middlewares/authMiddleware');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
 
 // Database connection
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+const db = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'your_db_user',
+    password: process.env.DB_PASSWORD || 'your_db_password',
+    database: process.env.DB_NAME || 'your_database_name',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-db.connect((err) => {
+// Test the database connection
+db.getConnection((err, connection) => {
     if (err) {
         console.error('Error connecting to the database:', err);
-        return;
+        process.exit(1); // Exit process with failure
     }
     console.log('Database connected successfully');
+    connection.release(); // Release the connection back to the pool
+});
+
+// Middleware to attach the db to req
+app.use((req, res, next) => {
+    req.db = db;
+    next();
 });
 
 // Routes
