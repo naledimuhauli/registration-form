@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import coverPhoto from './images/Image.png';
 import logo from './images/Logo.png';
 import glogin from './images/Glogin.png';
 import separator from './images/Seperater.png';
-import { Link } from 'react-router-dom';
 
 function Registration() {
   const navigate = useNavigate();
@@ -33,8 +32,12 @@ function Registration() {
     setSuccess('');
 
     // Input validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.name || !formData.email || !formData.password) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
+      return;
+    } else if (!emailPattern.test(formData.email)) {
+      setError('Please enter a valid email address');
       return;
     }
 
@@ -43,17 +46,18 @@ function Registration() {
       const response = await axios.post('http://localhost:5000/auth/register', formData);
       setSuccess(response.data.message); // Display success message
 
-      // Clear the form
+      // Clear the form fields
       setFormData({ name: '', email: '', password: '' });
 
-      // Redirect after 2 seconds to the registration page
+      // Redirect to landing page with email passed as state
       setTimeout(() => {
-        navigate('/dashboard');
+        navigate('/dashboard', { state: { email: formData.email } });
       }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     }
   };
+
 
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:5000/auth/google';
@@ -70,8 +74,8 @@ function Registration() {
             <div className='col-md-6 d-flex flex-column align-items-center justify-content-center'>
               <h1 className="sign-up mt-5">SIGN UP</h1>
               <p className="create">Create an account to get started</p>
-              <button className="continue mb-3 mt-5" onClick={handleGoogleLogin} >
-                <img src={glogin} alt="google" />
+              <button className="continue mb-3 mt-5" onClick={handleGoogleLogin}>
+                <img src={glogin} alt="google login" />
               </button>
               <img src={separator} alt="separator" className="mb-3 mt-3" />
               <form className="w-75 mt-3" onSubmit={handleSubmit}>
@@ -80,7 +84,7 @@ function Registration() {
                     type="text"
                     name="name"
                     className="form-control"
-                    placeholder='Name'
+                    placeholder="Name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -91,7 +95,7 @@ function Registration() {
                     type="email"
                     name="email"
                     className="form-control"
-                    placeholder='Email'
+                    placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -102,7 +106,7 @@ function Registration() {
                     type="password"
                     name="password"
                     className="form-control"
-                    placeholder='Password'
+                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
                     required
@@ -116,10 +120,9 @@ function Registration() {
                 {error && <p className="text-danger mt-2">{error}</p>}
                 {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
-                  Already have an account? <span className="login">
-                    <Link to={'/login'}>
-                      Log in
-                    </Link>
+                  Already have an account?{' '}
+                  <span className="login">
+                    <Link to={'/login'}>Log in</Link>
                   </span>
                 </p>
               </form>
