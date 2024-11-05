@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const bcrypt = require('bcryptjs'); // Using bcryptjs as it's easier to install across platforms
 const jwt = require('jsonwebtoken');

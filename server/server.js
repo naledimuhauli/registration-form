@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -42,14 +42,15 @@ const db = mysql.createPool({
 });
 
 // Test the database connection
-db.getConnection((err, connection) => {
-    if (err) {
+db.getConnection()
+    .then(connection => {
+        console.log('Database connected successfully');
+        connection.release(); // Release the connection back to the pool
+    })
+    .catch(err => {
         console.error('Error connecting to the database:', err);
-        process.exit(1);
-    }
-    console.log('Database connected successfully');
-    connection.release();
-});
+        process.exit(1); // Exit the process if the database connection fails
+    });
 
 // Middleware to attach the db to req
 app.use((req, res, next) => {
@@ -63,8 +64,7 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
-    // Here, you could save the user profile information to the database if needed.
-    return done(null, profile);
+    return done(null, profile); // Save the user profile to session
 }));
 
 // Serialize and deserialize user information
@@ -81,20 +81,20 @@ app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
         // Successful authentication, redirect to the dashboard
-        res.redirect('http://localhost:3001/dashboard');
+        res.redirect('http://localhost:3000/dashboard'); // Ensure this matches your client URL
     }
 );
 
-// Serve static files from the client/src directory
-app.use(express.static(path.join(__dirname, '../client/src')));
+// Serve static files from the client/build directory (assuming you want to serve built React app)
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Landing page or dashboard route
 app.get('/dashboard', (req, res) => {
     if (req.isAuthenticated()) {
         // Serve the registration.js file
-        res.sendFile(path.join(__dirname, '../client/src/registration.js'));
+        res.sendFile(path.join(__dirname, '../client/src/registration.js')); // Change if the path is incorrect
     } else {
-        res.redirect('/');
+        res.redirect('/'); // Redirect to landing page if not authenticated
     }
 });
 
@@ -102,17 +102,17 @@ app.get('/dashboard', (req, res) => {
 app.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
-        res.redirect('/');
+        res.redirect('/'); // Redirect to landing page after logout
     });
 });
 
 // Fallback protected route with token authentication
 app.get('/protected', authenticateToken, (req, res) => {
-    res.json({ message: 'This is a protected route' });
+    res.json({ message: 'This is a protected route' }); // Respond with a JSON message
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Define the port for the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
