@@ -107,20 +107,20 @@ app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
         // Successful authentication, redirect to the dashboard
-        res.redirect('http://localhost:3001/dashboard'); // Ensure this matches your client URL
+        res.redirect('http://localhost:3001/dashboard');
     }
 );
 
-// Serve static files from the client/build directory (assuming you want to serve built React app)
+// Serve static files from the client/build directory
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-// Landing page or dashboard route
+// Landing page
 app.get('/dashboard', (req, res) => {
     if (req.isAuthenticated()) {
         // Serve the registration.js file
-        res.sendFile(path.join(__dirname, '../client/src/registration.js')); // Change if the path is incorrect
+        res.sendFile(path.join(__dirname, '../client/src/registration.js'));
     } else {
-        res.redirect('/'); // Redirect to landing page if not authenticated
+        res.redirect('/'); // Redirect to home page if not authenticated
     }
 });
 

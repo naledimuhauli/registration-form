@@ -49,7 +49,7 @@ function Login() {
                 </div>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-6 d-flex flex-column align-items-center justify-content-center">
+                        <div className="col-md-6 d-flex flex-column align-items-center justify-content-center p-0">
                             <h1 className="sign-up mt-5">LOG IN</h1>
                             <form className="w-75 mt-3" onSubmit={handleSubmit}>
                                 <div className="mb-3 inputForm">
@@ -74,7 +74,7 @@ function Login() {
                                         required
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-dark w-100 registerBtn">Log In</button>
+                                <button type="submit" className=" registerBtn">Log In</button>
                                 {error && <p className="text-danger mt-2">{error}</p>}
                                 {success && <p className="text-success mt-2">{success}</p>}
                                 <p className="account mt-3">
@@ -85,7 +85,7 @@ function Login() {
                                 </p>
                             </form>
                         </div>
-                        <div className="col-md-6 d-flex align-items-center justify-content-center">
+                        <div className="col-md-6 d-flex align-items-center justify-content-center p-0">
                             <img src={coverPhoto} alt="Cover" className="cover-photo" />
                         </div>
                     </div>

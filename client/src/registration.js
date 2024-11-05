@@ -66,13 +66,13 @@ function Registration() {
   return (
     <div className="regi">
       <div className='form'>
-        <div className='logo mb-5'>
+        <div className='logo mb-3'>
           <img src={logo} alt='logo' />
         </div>
-        <div className='container-fluid'>
-          <div className='row'>
-            <div className='col-md-6 d-flex flex-column align-items-center justify-content-center'>
-              <h1 className="sign-up mt-5">SIGN UP</h1>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-6 d-flex flex-column align-items-center justify-content-center p-0">
+              <h1 className="sign-up mt-3">SIGN UP</h1>
               <p className="create">Create an account to get started</p>
               <button className="continue mb-3 mt-3" onClick={handleGoogleLogin}>
                 <img src={glogin} alt="google login" />
@@ -116,19 +116,19 @@ function Registration() {
                   <input type="checkbox" className="form-check-input" id="rememberMe" />
                   <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                 </div>
-                <button type="submit" className=" registerBtn">Register</button>
+                <button type="submit" className="registerBtn">Register</button>
                 {error && <p className="text-danger mt-2">{error}</p>}
                 {success && <p className="text-success mt-2">{success}</p>}
                 <p className="account mt-3">
                   Already have an account?{' '}
                   <span className="login">
-                    <Link to={'/login'} className='login'>Log in</Link>
+                    <Link to={'/login'} className="login">Log in</Link>
                   </span>
                 </p>
               </form>
             </div>
-            <div className='col-md-6 d-flex align-items-center justify-content-center'>
-              <img src={coverPhoto} alt='Cover' className="cover-photo" />
+            <div className="col-md-6 d-flex align-items-center justify-content-center p-0">
+              <img src={coverPhoto} alt="Cover" className="cover-photo w-100" />
             </div>
           </div>
         </div>
