@@ -10,7 +10,7 @@ const router = express.Router();
 // Register route
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-    const db = req.db;
+    const db = req.db; // Ensure db is correctly attached to the request
 
     // Input validation
     if (!name || !email || !password) {
@@ -30,7 +30,7 @@ router.post('/register', async (req, res) => {
 
     try {
         // Check if the email is already in use
-        const [existingUsers] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
+        const [existingUsers] = await db.query('SELECT * FROM users WHERE email = ?', [email]); // Removed promise() since db is already a promise pool
         if (existingUsers.length > 0) {
             return res.status(400).json({ message: 'Email is already in use' });
         }
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the new user into the database
-        const [result] = await db.promise().query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+        const [result] = await db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
 
         // Generate a JWT
         const token = jwt.sign({ userId: result.insertId }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // Find user by email
-        const [rows] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
+        const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (rows.length === 0) {
             return res.status(400).json({ message: 'Invalid email or password' });
         }

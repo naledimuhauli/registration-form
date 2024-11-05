@@ -38,7 +38,7 @@ const db = mysql.createPool({
     database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
 });
 
 // Test the database connection
@@ -63,8 +63,34 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/auth/google/callback'
-}, (accessToken, refreshToken, profile, done) => {
-    return done(null, profile); // Save the user profile to session
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM users WHERE google_id = ?', [profile.id]);
+
+        if (rows.length > 0) {
+            // User exists, proceed with authentication
+            return done(null, rows[0]);
+        } else {
+            // User does not exist, create a new user without a password
+            const [result] = await db.query('INSERT INTO users (google_id, name, email, password) VALUES (?, ?, ?, ?)', [
+                profile.id,
+                profile.displayName,
+                profile.emails[0].value,
+                null // No password for Google users
+            ]);
+            const newUser = {
+                id: result.insertId,
+                google_id: profile.id,
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                password: null // No password for Google users
+            };
+            return done(null, newUser);
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        return done(error, null); // Handle errors in the database query
+    }
 }));
 
 // Serialize and deserialize user information
@@ -81,7 +107,7 @@ app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
         // Successful authentication, redirect to the dashboard
-        res.redirect('http://localhost:3000/dashboard'); // Ensure this matches your client URL
+        res.redirect('http://localhost:3001/dashboard'); // Ensure this matches your client URL
     }
 );
 
