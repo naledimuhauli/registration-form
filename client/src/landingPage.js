@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './App.css';
+
 
 function LandingPage() {
     const location = useLocation();
@@ -12,10 +14,12 @@ function LandingPage() {
     };
 
     return (
-        <div>
-            <h1>Registration Successful</h1>
-            <p>Welcome, {email}</p>
-            <button onClick={handleLogout}>Logout</button>
+        <div className='landing'>
+            <div className="page">
+                <h1>Registration Successful</h1>
+                <p>Welcome, {email}</p>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     );
 }

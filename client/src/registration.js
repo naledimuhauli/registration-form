@@ -43,7 +43,7 @@ function Registration() {
 
     try {
       // Send POST request to backend
-      const response = await axios.post('http://localhost:5000/auth/register', formData);
+      const response = await axios.post('http://localhost:3000/auth/register', formData);
       setSuccess(response.data.message); // Display success message
 
       // Clear the form fields

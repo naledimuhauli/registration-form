@@ -91,3 +91,34 @@ span .login {
     color: #FEC00F;
     text-decoration: none;
 }
+
+.landing {
+    background-color: black;
+    padding: 100px 200px 400px 200px;
+}
+
+.landing .page {
+    max-width: 600px;
+    display: block;
+    margin: auto;
+    align-items: center;
+}
+
+.page h1 {
+    color: #FEC00F;
+    font-size: 50px;
+}
+
+.page p {
+    color: white;
+    font-size: 30px;
+}
+
+.page button {
+    width: 100px;
+    padding: 10px;
+    border: 1px solid rgb(255, 254, 254);
+    background-color: rgb(250, 248, 248);
+    color: rgb(15, 15, 15);
+    border-radius: 10px;
+}

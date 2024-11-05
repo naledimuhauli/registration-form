@@ -30,7 +30,7 @@ function Login() {
 
         try {
             // Send POST request to verify email and password
-            const response = await axios.post('http://localhost:5000/auth/login', formData);
+            const response = await axios.post('http://localhost:3000/auth/login', formData);
             setSuccess(response.data.message); // Display success message
 
             // Redirect to landing page with email passed as state
